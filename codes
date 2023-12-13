@@ -1,0 +1,496 @@
+
+Classification Algorithms:
+
+Decision Trees: Decision trees can be used to create a model that predicts the species of iris based on the input features.
+Random Forest: Random Forest is an ensemble learning method that builds multiple decision trees and merges them together to get a more
+accurate and stable prediction.
+Support Vector Machines (SVM): SVM can be applied for classification, aiming to find a hyperplane that best separates the different classes in the dataset.
+Clustering Algorithms:
+
+K-Means: K-Means clustering can be applied to identify natural groupings or clusters within the data.
+Hierarchical Clustering: This technique creates a hierarchy of clusters and can be useful for understanding the relationships between different iris samples.
+Dimensionality Reduction:
+
+Principal Component Analysis (PCA): PCA can be used to reduce the dimensionality of the dataset while retaining most of its variability. 
+This can be helpful for visualizing data and improving the efficiency of certain algorithms.
+Association Rule Mining:
+
+Apriori Algorithm: If the dataset includes additional categorical variables, association rule mining techniques like Apriori can be applied 
+to discover interesting relationships between them.
+Outlier Detection:
+
+Isolation Forest: This algorithm can be used to identify outliers or anomalies in the dataset.
+Cross-Validation and Model Evaluation:
+
+K-Fold Cross-Validation: To assess the performance of your models, 
+use techniques like k-fold cross-validation to ensure robustness and reliability of results.
+Hyperparameter Tuning:
+
+Grid Search or Random Search: Fine-tune the hyperparameters of your models to optimize their performance on the Iris dataset.
+
+# DATA MINING TECHNIQUES
+Classification:
+
+Decision Trees: A tree-like model used for classifying instances based on features.
+Random Forest: An ensemble learning method that builds multiple decision trees and merges their predictions for improved accuracy.
+Clustering:
+
+K-Means: A partitioning method that clusters data points into k groups based on similarity.
+Hierarchical Clustering: Builds a hierarchy of clusters by either merging or splitting them based on similarity.
+Association Rule Mining:
+
+Apriori Algorithm: Identifies frequent patterns, associations, or relationships in data, commonly used in market basket analysis.
+Regression Analysis:
+
+Linear Regression: Models the relationship between a dependent variable and one or more independent variables using a linear equation.
+Logistic Regression: Used for binary classification problems, predicting the probability of an instance belonging to a particular class.
+Neural Networks:
+
+Deep Learning: Involves neural networks with multiple layers (deep neural networks) for tasks such as image recognition,
+natural language processing, and more.
+Support Vector Machines (SVM):
+
+SVM: Finds a hyperplane that best separates classes in a high-dimensional space, commonly used for classification.
+Dimensionality Reduction:
+
+Principal Component Analysis (PCA): Reduces the number of dimensions in a dataset while retaining as much variance as possible.
+t-Distributed Stochastic Neighbor Embedding (t-SNE): Reduces dimensionality for visualization, 
+particularly useful for exploring high-dimensional data in two or three dimensions.
+Outlier Detection:
+
+Isolation Forest: Identifies anomalies or outliers in the data by isolating instances.
+Sequential Pattern Mining:
+
+Sequence Alignment and Pattern Discovery: Used in analyzing sequences of data, such as time-series data or DNA sequences.
+Ensemble Methods:
+
+Bagging and Boosting: Techniques that combine multiple models to improve overall accuracy and reduce overfitting
+(e.g., AdaBoost, Gradient Boosting, XGBoost).
+Text Mining and Natural Language Processing (NLP):
+
+Text Classification: Categorizes and classifies text data into predefined categories.
+Named Entity Recognition (NER): Identifies entities (e.g., names, locations) in text.
+Time Series Analysis:
+
+ARIMA (AutoRegressive Integrated Moving Average): Used for forecasting time series data.
+Frequent Pattern Mining:
+
+FP-Growth Algorithm: Efficiently discovers frequent itemsets in large datasets.
+Reinforcement Learning:
+
+Q-Learning and Deep Q-Learning: Used in training agents to make sequential decisions in an environment.
+
+Supervised Learning Techniques:
+Linear Regression:
+
+Supervised: Yes
+Objective: Predict a continuous output variable based on input features.
+Logistic Regression:
+
+Supervised: Yes
+Objective: Binary or multiclass classification.
+Decision Trees:
+
+Supervised: Yes
+Objective: Classification and regression tasks.
+Random Forest:
+
+Supervised: Yes
+Objective: Ensemble learning for classification and regression.
+Support Vector Machines (SVM):
+
+Supervised: Yes
+Objective: Binary or multiclass classification.
+Neural Networks:
+
+Supervised: Yes
+Objective: Classification and regression; can handle complex relationships.
+Unsupervised Learning Techniques:
+K-Means Clustering:
+
+Supervised: No
+Objective: Group similar instances into clusters.
+Hierarchical Clustering:
+
+Supervised: No
+Objective: Create a tree of clusters based on similarity.
+Association Rule Mining (Apriori):
+
+Supervised: No
+Objective: Discover associations between items in transactional data.
+Principal Component Analysis (PCA):
+
+Supervised: No
+Objective: Reduce dimensionality while retaining variability.
+t-Distributed Stochastic Neighbor Embedding (t-SNE):
+
+Supervised: No
+Objective: Visualization of high-dimensional data.
+Isolation Forest (for Outlier Detection):
+
+Supervised: No
+Objective: Identify anomalies in the data.
+Frequent Pattern Mining (FP-Growth):
+
+Supervised: No
+Objective: Discover frequent itemsets in transactional data.
+Clustering Evaluation Metrics (e.g., Silhouette Score):
+
+Supervised: No
+Objective: Assess the quality of clustering results
+*********************************************************************************************************************************************************************
+Exploratory Data Analysis (EDA):: Before applying any specific data mining technique, it's essential to perform exploratory data analysis. 
+This involves visualizing the data to understand its distribution, relationships between variables, 
+and potential patterns. Tools like scatter plots, histograms, and box plots can be useful.
+
+*********************************************************************************************************************************************************************
+# EDA
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the Iris dataset
+iris = sns.load_dataset('iris')
+# Display basic information about the dataset
+print(iris.info())
+
+# Display summary statistics
+print(iris.describe())
+# Pair plot for visualizing relationships between features
+sns.pairplot(iris, hue='species', markers=["o", "s", "D"])       #"o" represents circles."s" represents squares."D" represents diamonds.
+plt.show()
+# Correlation matrix
+correlation_matrix = iris.corr()
+
+# Heatmap
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm')
+plt.show()
+# Count plot for the 'species' variable
+sns.countplot(x='species', data=iris)
+plt.show()
+# Check for missing data
+print(iris.isnull().sum())
+# Box plot for outlier detection
+sns.boxplot(x='species', y='sepal_length', data=iris)
+plt.show()
+# Example: Create a new feature 'petal_area'
+iris['petal_area'] = iris['petal_length'] * iris['petal_width']
+import plotly.express as px
+
+# Interactive scatter plot
+fig = px.scatter(iris, x='sepal_length', y='sepal_width', color='species')
+fig.show()
+
+**************************************************************************************************************************************************************************
+ DECISION TREE
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score, classification_report
+
+# Split the data into features (X) and target variable (y)
+X = iris.drop('species', axis=1)
+y = iris['species']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a Decision Tree model
+clf = DecisionTreeClassifier()
+
+# Train the model
+clf.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred = clf.predict(X_test)
+
+# Evaluate the model
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Classification Report:\n", classification_report(y_test, y_pred))
+*****************************************************************************************************************************************************************************************
+K-Means
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+
+# Use only two features for visualization purposes
+X_cluster = iris[['sepal_length', 'sepal_width']]
+
+# Apply K-Means clustering
+kmeans = KMeans(n_clusters=3, random_state=42)
+kmeans.fit(X_cluster)
+
+# Add cluster labels to the dataset
+iris['cluster'] = kmeans.labels_
+
+# Visualize the clusters
+plt.scatter(iris['sepal_length'], iris['sepal_width'], c=iris['cluster'], cmap='viridis')
+plt.xlabel('Sepal Length')
+plt.ylabel('Sepal Width')
+plt.title('K-Means Clustering on Iris Dataset')
+plt.show()
+*************************************************************************************************************************************************************************
+#APRIORI RULE MINING
+from mlxtend.frequent_patterns import apriori
+from mlxtend.preprocessing import TransactionEncoder
+
+# Convert the species column to one-hot encoding
+te = TransactionEncoder()
+te_ary = te.fit(iris[['species']]).transform(iris[['species']])
+df_encoded = pd.DataFrame(te_ary, columns=te.columns_)
+
+# Apply Apriori algorithm
+frequent_itemsets = apriori(df_encoded, min_support=0.005, use_colnames=True)
+
+# Display the frequent itemsets
+print(frequent_itemsets)
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#ASSOCIATION RULE MINING
+from mlxtend.frequent_patterns import apriori, association_rules
+import pandas as pd
+
+# Assuming you have already obtained frequent itemsets
+frequent_itemsets = apriori(df_encoded, min_support=0.005, use_colnames=True)
+
+# Generate association rules
+rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.5)
+
+# Display the association rules
+print(rules)
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+~Association Rule Mining:
+Supervised/Unsupervised: Unsupervised
+Objective: Discover interesting relationships or associations between variables in a dataset.
+Example: Market basket analysis, where the goal is to find associations between products that are frequently purchased together.
+Apriori Algorithm:
+
+~Apriori Algorithm
+Supervised/Unsupervised: Unsupervised
+Objective: Discover frequent itemsets in a transactional dataset, which can be used to generate association rules.
+Example: Identifying frequently co-occurring items in a set of transactions, such as items purchased together in a store.
+************************************************************************************************************************************************************************************
+# Random Forest
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report
+
+# Load the Iris dataset
+iris = sns.load_dataset('iris')
+
+# Split the data into features (X) and target variable (y)
+X = iris.drop('species', axis=1)
+y = iris['species']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a Random Forest model
+rf_classifier = RandomForestClassifier(random_state=42)
+
+# Train the model
+rf_classifier.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred_rf = rf_classifier.predict(X_test)
+
+# Evaluate the model
+print("Random Forest Accuracy:", accuracy_score(y_test, y_pred_rf))
+print("Random Forest Classification Report:\n", classification_report(y_test, y_pred_rf))
+
+*********************************************************************************************************************************************************************************
+# SVM
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, classification_report
+import seaborn as sns
+
+# Load the Iris dataset
+iris = sns.load_dataset('iris')
+
+# Split the data into features (X) and target variable (y)
+X = iris.drop('species', axis=1)
+y = iris['species']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a Support Vector Machine (SVM) model
+svm_classifier = SVC()
+
+# Train the model
+svm_classifier.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred_svm = svm_classifier.predict(X_test)
+
+# Evaluate the model
+print("SVM Accuracy:", accuracy_score(y_test, y_pred_svm))
+print("SVM Classification Report:\n", classification_report(y_test, y_pred_svm))
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Accuracy: 1.0
+SVM Classification Report:
+               precision    recall  f1-score   support
+
+      setosa       1.00      1.00      1.00        10
+  versicolor       1.00      1.00      1.00         9
+   virginica       1.00      1.00      1.00        11
+
+    accuracy                           1.00        30
+   macro avg       1.00      1.00      1.00        30
+weighted avg       1.00      1.00      1.00        30
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Precision:
+
+Precision is the ratio of correctly predicted positive observations to the total predicted positives.
+All precision values for the three classes are 1.0, meaning that there were no false positives for any class. 
+All instances predicted as a certain class were correct.
+Recall:
+
+Recall is the ratio of correctly predicted positive observations to the all observations in the actual class.
+All recall values for the three classes are 1.0, indicating that the model correctly identified all instances of each class.
+F1-Score:
+
+F1-score is the weighted average of precision and recall. It ranges from 0 to 1, where 1 is the best.
+All F1-score values are 1.0, suggesting an excellent balance between precision and recall for each class.
+Accuracy:
+
+Accuracy is the ratio of correctly predicted observations to the total observations.
+The overall accuracy is 1.0, meaning that the model correctly classified all instances in the test set.
+**********************************************************************************************************************************************************************************
+# Neural Networks 
+!pip install tensorflow
+import tensorflow as tf
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import accuracy_score, classification_report
+import seaborn as sns
+
+# Load the Iris dataset
+iris = sns.load_dataset('iris')
+
+# Split the data into features (X) and target variable (y)
+X = iris.drop('species', axis=1)
+y = iris['species']
+
+# Convert class labels to integers using LabelEncoder
+label_encoder = LabelEncoder()
+y = label_encoder.fit_transform(y)
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Build a neural network model
+model = tf.keras.Sequential([
+    tf.keras.layers.Dense(64, activation='relu', input_shape=(X_train.shape[1],)),
+    tf.keras.layers.Dense(3, activation='softmax')  # Output layer with 3 neurons for the 3 classes
+])
+
+# Compile the model
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
+# Train the model
+model.fit(X_train, y_train, epochs=50, batch_size=32, validation_split=0.1, verbose=0)
+
+# Evaluate the model on the test set
+y_pred_probs = model.predict(X_test)
+y_pred_nn = tf.argmax(y_pred_probs, axis=1).numpy()
+
+# Evaluate the model
+print("Neural Network Accuracy:", accuracy_score(y_test, y_pred_nn))
+print("Neural Network Classification Report:\n", classification_report(y_test, y_pred_nn))
+**********************************************************************************************************************************************************************
+# KNN
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, classification_report
+import seaborn as sns
+
+# Load the Iris dataset
+iris = sns.load_dataset('iris')
+
+# Split the data into features (X) and target variable (y)
+X = iris.drop('species', axis=1)
+y = iris['species']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a KNN classifier with k=3 (you can adjust k as needed)
+knn_classifier = KNeighborsClassifier(n_neighbors=3)
+
+# Train the model
+knn_classifier.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred_knn = knn_classifier.predict(X_test)
+
+# Evaluate the model
+print("KNN Accuracy:", accuracy_score(y_test, y_pred_knn))
+print("KNN Classification Report:\n", classification_report(y_test, y_pred_knn))
+***************************************************************************************************************************************************************************
+# Logistic Analysis
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report
+import seaborn as sns
+
+# Load the Iris dataset
+iris = sns.load_dataset('iris')
+
+# Create a binary target variable
+iris['is_setosa'] = (iris['species'] == 'setosa').astype(int)
+
+# Split the data into features (X) and binary target variable (y)
+X = iris.drop(['species', 'is_setosa'], axis=1)
+y = iris['is_setosa']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a logistic regression model
+logreg_model = LogisticRegression()
+
+# Train the model
+logreg_model.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred_logreg = logreg_model.predict(X_test)
+
+# Evaluate the model
+print("Logistic Regression Accuracy:", accuracy_score(y_test, y_pred_logreg))
+print("Logistic Regression Classification Report:\n", classification_report(y_test, y_pred_logreg))
+********************************************************************************************************************************************************************************
+# Principle Componenet Analysis
+import pandas as pd
+from sklearn.decomposition import PCA
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report
+import seaborn as sns
+
+# Load the Iris dataset
+iris = sns.load_dataset('iris')
+
+# Separate features (X) and target variable (y)
+X = iris.drop('species', axis=1)
+y = iris['species']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Apply PCA to reduce the dimensionality
+pca = PCA(n_components=2)
+X_train_pca = pca.fit_transform(X_train)
+X_test_pca = pca.transform(X_test)
+
+# Create and train a classifier (Random Forest in this example)
+clf = RandomForestClassifier(random_state=42)
+clf.fit(X_train_pca, y_train)
+
+# Make predictions on the test set
+y_pred = clf.predict(X_test_pca)
+
+# Evaluate the model
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Classification Report:\n", classification_report(y_test, y_pred))
+**********************************************************************************************************************************************************************************
